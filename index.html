@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MailCraft 3D | Professional Email Studio</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080a18;
+  --panel:#11152a;
+  --purple:#9270ff;
+  --cyan:#61e7ff;
+  --text:#f7f6ff;
+  --muted:#a7abc5;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:Inter,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:
+  radial-gradient(ellipse at 80% 15%,#4931a344,transparent 40%),
+  radial-gradient(ellipse at 10% 60%,#087d9840,transparent 40%),
+  #080a18;
+}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+nav{
+  max-width:1200px;margin:auto;padding:22px 25px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px}
+.logo span{color:var(--purple)}
+.links{display:flex;gap:28px;color:var(--muted);font-size:14px}
+.links a:hover{color:white}
+.btn{
+  border:1px solid #ffffff20;border-radius:12px;
+  padding:12px 19px;background:#ffffff08;color:white;
+  transition:.25s;
+}
+.btn:hover{transform:translateY(-3px);border-color:var(--cyan)}
+.primary{
+  background:linear-gradient(120deg,#7855f7,#a16cff);
+  border:0;box-shadow:0 8px 30px #7855f740;font-weight:700;
+}
+.hero{
+  max-width:1200px;margin:auto;padding:65px 25px 100px;
+  min-height:570px;display:grid;
+  grid-template-columns:1fr 1fr;align-items:center;gap:35px;
+}
+.eyebrow{
+  color:var(--cyan);text-transform:uppercase;letter-spacing:3px;
+  font-size:11px;font-weight:800;
+}
+h1{
+  font-size:clamp(42px,6vw,75px);line-height:1.05;
+  letter-spacing:-3px;margin:22px 0;
+}
+.gradient{
+  background:linear-gradient(100deg,#a68bff,#61e7ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p,.section-intro{
+  color:var(--muted);font-size:16px;line-height:1.8;max-width:500px;
+}
+.hero-actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:30px}
+.trust{margin-top:28px;color:#9ca2bd;font-size:12px}
+.scene{
+  height:410px;display:grid;place-items:center;
+  perspective:1000px;position:relative;
+}
+.orb{
+  width:280px;height:280px;border-radius:50%;
+  background:linear-gradient(140deg,#8e68ff88,#20d9ff22);
+  filter:blur(4px);position:absolute;
+  box-shadow:0 0 110px #7656ff40;
+}
+.envelope{
+  width:260px;height:185px;position:relative;
+  transform-style:preserve-3d;
+  transform:rotateY(-20deg) rotateX(12deg) rotateZ(-7deg);
+  animation:float 5s ease-in-out infinite;
+  filter:drop-shadow(0 30px 30px #0008);
+}
+.env-back{
+  position:absolute;inset:0;
+  background:linear-gradient(145deg,#a99aff,#5540bd);
+  border:1px solid #ffffff65;border-radius:14px;
+  transform:translateZ(-5px);
+}
+.paper{
+  position:absolute;left:25px;right:25px;top:-55px;height:170px;
+  padding:20px 17px;border:1px solid #ffffff60;border-radius:12px;
+  background:linear-gradient(140deg,#ffffffed,#cbdcffdf);
+  color:#222441;transform:translateZ(8px);
+  box-shadow:0 10px 30px #0004;
+}
+.paper strong{font-size:12px}
+.paper small{display:block;margin:10px 0;color:#63688a}
+.line{height:5px;background:#a7b1d3;border-radius:9px;margin:9px 0}
+.line:nth-child(4){width:75%}
+.line:nth-child(5){width:55%}
+.env-front{
+  position:absolute;inset:0;border-radius:14px;overflow:hidden;
+  background:linear-gradient(140deg,#9676ffdd,#5743bded);
+  border:1px solid #ffffff70;transform:translateZ(14px);
+  clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);
+}
+.flap{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#b6a6ff,#8060f3);
+  clip-path:polygon(0 0,100% 0,50% 62%);
+  transform:translateZ(20px);
+}
+.seal{
+  position:absolute;left:calc(50% - 22px);top:105px;
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#6ff0ff,#8270ff);
+  border:2px solid #ffffff99;z-index:5;
+  box-shadow:0 0 28px #61e7ff80;
+}
+.float-card{
+  position:absolute;padding:15px 18px;border-radius:15px;
+  background:#ffffff12;border:1px solid #ffffff25;
+  backdrop-filter:blur(18px);box-shadow:0 15px 40px #0003;
+  animation:float 5s ease-in-out infinite;
+}
+.float-card b{display:block;font-size:12px}
+.float-card small{color:var(--muted);font-size:10px}
+.card-one{top:32px;right:0}
+.card-two{bottom:20px;left:0;animation-delay:-2s}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5af0bd;margin-right:6px}
+@keyframes float{
+  0%,100%{translate:0 0;transform:rotateY(-20deg) rotateX(12deg) rotateZ(-7deg)}
+  50%{translate:0 -15px;transform:rotateY(-12deg) rotateX(8deg) rotateZ(-3deg)}
+}
+.section{max-width:1200px;margin:auto;padding:70px 25px}
+.section-heading{text-align:center;margin-bottom:38px}
+h2{font-size:clamp(28px,4vw,43px);letter-spacing:-1.5px;margin-bottom:12px}
+.templates{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+.template{
+  background:linear-gradient(145deg,#ffffff0d,#ffffff04);
+  border:1px solid #ffffff15;border-radius:20px;padding:25px;
+  transition:transform .3s,border-color .3s;
+  transform-style:preserve-3d;
+}
+.template:hover{transform:translateY(-8px) rotateX(2deg);border-color:#9270ff88}
+.template-icon{
+  height:52px;width:52px;display:grid;place-items:center;
+  border-radius:15px;background:#9270ff24;font-size:25px;margin-bottom:20px;
+}
+.template h3{font-size:18px;margin-bottom:10px}
+.template p{color:var(--muted);font-size:13px;line-height:1.8;margin-bottom:20px}
+.editor{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+.box{
+  padding:25px;background:#11152beF;border:1px solid #ffffff18;
+  border-radius:20px;min-width:0;
+}
+.box h3{margin-bottom:20px}
+label{display:block;font-size:12px;color:#c4c8df;margin:14px 0 7px}
+input,select,textarea{
+  width:100%;background:#090d20;color:white;
+  border:1px solid #303650;border-radius:10px;padding:12px;
+}
+textarea{min-height:100px;resize:vertical;line-height:1.7}
+input:focus,textarea:focus,select:focus{outline:1px solid var(--purple)}
+#output{min-height:290px;white-space:pre-wrap;overflow-wrap:anywhere}
+#subject{font-size:13px;color:var(--cyan);margin-bottom:15px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+footer{
+  text-align:center;padding:35px 20px;border-top:1px solid #ffffff12;
+  color:var(--muted);font-size:12px;
+}
+#toast{
+  position:fixed;bottom:20px;left:50%;translate:-50% 0;
+  padding:12px 18px;background:#202743;border:1px solid #ffffff22;
+  border-radius:12px;display:none;z-index:10;
+}
+@media(max-width:800px){
+  .hero{grid-template-columns:1fr;padding-top:45px;gap:15px}
+  .scene{height:350px}
+  .templates{grid-template-columns:1fr 1fr}
+  .editor{grid-template-columns:1fr}
+  .links{gap:13px}
+}
+
+@media(max-width:520px){
+  nav{padding:18px 15px;flex-wrap:wrap}
+  .logo{font-size:22px}
+  .links{order:3;width:100%;justify-content:space-between;font-size:12px}
+  nav>.btn{padding:9px 12px;font-size:12px}
+  .hero{padding:45px 18px 60px}
+  h1{letter-spacing:-2px}
+  .scene{height:310px;scale:.9}
+  .templates{grid-template-columns:1fr}
+  .section{padding:50px 17px}
+  .box{padding:18px}
+  .float-card{scale:.85}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}
+}
+</style>
+</head>
+
+<body>
+<nav>
+  <a class="logo" href="#">Mail<span>Craft.</span></a>
+  <div class="links">
+    <a href="#templates">Templates</a>
+    <a href="#studio">Email Studio</a>
+    <a href="#learn">Learn</a>
+  </div>
+  <a class="btn primary" href="#studio">Start Writing ↗</a>
+</nav>
+
+<main>
+<section class="hero">
+  <div>
+    <div class="eyebrow">✦ THE NEXT GENERATION EMAIL STUDIO</div>
+    <h1>Your words.<br>Your future.<br><span class="gradient">Your impact.</span></h1>
+    <p>
+      Write professional emails that open doors. Create job applications,
+      internship requests and follow-ups with confidence.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#studio">Create an email →</a>
+      <a class="btn" href="#templates">Explore templates</a>
+    </div>
+    <div class="trust">✦ Beginner-friendly &nbsp; ✦ Free to use &nbsp; ✦ No signup</div>
+  </div>
+
+  <div class="scene" aria-label="Animated three-dimensional envelope illustration">
+    <div class="orb"></div>
+    <div class="envelope">
+      <div class="env-back"></div>
+      <div class="paper">
+        <strong>Dear Hiring Manager,</strong>
+        <small>I'm excited to apply for...</small>
+        <div class="line"></div><div class="line"></div>
+        <div class="line"></div><div class="line"></div>
+      </div>
+      <div class="env-front"></div>
+      <div class="flap"></div>
+      <div class="seal"></div>
+    </div>
+    <div class="float-card card-one">
+      <b>✦ Professional tone</b><small>Clear. Confident. Polished.</small>
+    </div>
+    <div class="float-card card-two">
+      <b><span class="dot"></span> Ready to send</b><small>Your next opportunity awaits</small>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="templates">
+  <div class="section-heading">
+    <div class="eyebrow">CHOOSE YOUR NEXT MOVE</div>
+    <h2>One goal. The <span class="gradient">right words.</span></h2>
+    <p class="section-intro" style="margin:auto">Choose a template and personalize it in seconds.</p>
+  </div>
+  <div class="templates">
+    <article class="template">
+      <div class="template-icon">💼</div>
+      <h3>Job Application</h3>
+      <p>Introduce your skills and apply for a full-time position professionally.</p>
+      <button class="btn" data-type="job">Use template →</button>
+    </article>
+    <article class="template">
+      <div class="template-icon">🚀</div>
+      <h3>Internship Request</h3>
+      <p>Show your potential, learning mindset and interest in an internship.</p>
+      <button class="btn" data-type="internship">Use template →</button>
+    </article>
+    <article class="template">
+      <div class="template-icon">📨</div>
+      <h3>Follow-up Email</h3>
+      <p>Politely ask for an update after submitting your application.</p>
+      <button class="btn" data-type="followup">Use template →</button>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="studio">
+  <div class="section-heading">
+    <div class="eyebrow">YOUR PERSONAL WRITING SPACE</div>
+    <h2>Email <span class="gradient">Studio.</span></h2>
+    <p class="section-intro" style="margin:auto">Edit the details and generate a ready-to-copy professional draft.</p>
+  </div>
+  <div class="editor">
+    <div class="box">
+      <h3>01 / Customize</h3>
+      <label for="type">Email type</label>
+      <select id="type">
+        <option value="internship">Internship application</option>
+        <option value="job">Job application</option>
+        <option value="followup">Application follow-up</option>
+      </select>
+      <label for="name">Your name</label>
+      <input id="name" value="Aryan Agrahari">
+      <label for="role">Position</label>
+      <input id="role" value="Python Developer Intern">
+      <label for="company">Company</label>
+      <input id="company" placeholder="Company name (optional)">
+      <label for="skills">Your skills</label>
+      <input id="skills" value="Python, Java, HTML, CSS and MySQL">
+      <label for="extra">Additional details (optional)</label>
+      <textarea id="extra" placeholder="Mention a project or relevant achievement"></textarea>
+      <div class="actions">
+        <button class="btn primary" id="generate">Generate email ↗</button>
+        <button class="btn" id="reset">Reset</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>02 / Live Preview</h3>
+      <div id="subject"></div>
+      <label for="output">Email body — editable</label>
+      <textarea id="output" spellcheck="true"></textarea>
+      <p id="count" style="font-size:12px;color:var(--muted);margin-top:9px">0 words</p>
+      <div class="actions">
+        <button class="btn primary" id="copy">Copy email</button>
+        <button class="btn" id="download">Download .txt</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="learn">
+  <div class="section-heading">
+    <div class="eyebrow">SMALL DETAILS. BIG DIFFERENCE.</div>
+    <h2>Write like a <span class="gradient">professional.</span></h2>
+  </div>
+  <div class="templates">
+    <article class="template">
+      <div class="template-icon">✍️</div>
+      <h3>Keep it clear</h3>
+      <p>Use a meaningful subject line and explain your purpose in the first paragraph.</p>
+    </article>
+    <article class="template">
+      <div class="template-icon">🎯</div>
+      <h3>Be relevant</h3>
+      <p>Include skills that match the role and that you can confidently explain.</p>
+    </article>
+    <article class="template">
+      <div class="template-icon">🤝</div>
+      <h3>Close politely</h3>
+      <p>Thank the reader, attach your resume when needed, and check everything before sending.</p>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>MailCraft 3D · Crafted for your next opportunity.</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+let toastTimer;
+
+function notify(message){
+  $("toast").textContent=message;
+  $("toast").style.display="block";
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>$("toast").style.display="none",2400);
+}
+
+function generate(){
+  const type=$("type").value;
+  const name=$("name").value.trim()||"Your Name";
+  const role=$("role").value.trim()||"the advertised position";
+  const company=$("company").value.trim()||"your organization";
+  const skills=$("skills").value.trim();
+  const extra=$("extra").value.trim();
+  let body="";
+
+  if(type==="internship"){
+    body=`Dear Hiring Manager,
+
+I hope you are doing well.
+
+My name is ${name}, and I am currently pursuing a Bachelor of Computer Applications (BCA).`;
+    if(skills)body+=` I have foundational knowledge of ${skills}.`;
+    body+=`
+
+I am writing to express my interest in the ${role} opportunity at ${company}. I am eager to gain practical experience, work on real-world projects, and learn from experienced professionals.`;
+  }else if(type==="job"){
+    body=`Dear Hiring Manager,
+
+I hope you are doing well.
+
+My name is ${name}, and I am writing to apply for the ${role} position at ${company}.`;
+    if(skills)body+=` My relevant skills include ${skills}.`;
+    body+=`
+
+I would welcome the opportunity to contribute to your team, apply my knowledge, and continue developing professionally.`;
+  }else{
+    body=`Dear Hiring Manager,
+
+I hope you are doing well.
+
+I am writing to follow up on my application for the ${role} opportunity at ${company}. I remain interested in the role and would appreciate any update you could share regarding my application.`;
+  }
+
+  if(extra)body+=`\n\n${extra}`;
+  body+=`
+
+Please find my resume attached for your consideration.
+
+Thank you for your time and consideration. I look forward to hearing from you.
+
+Best regards,
+${name}`;
+
+  $("subject").textContent="Subject: "+(type==="followup"?"Follow-up on ": "Application for ")+role;
+  $("output").value=body;
+  updateCount();
+}
+
+function updateCount(){
+  const text=$("output").value.trim();
+  const count=text?text.split(/\s+/).length:0;
+  $("count").textContent=count+" words · "+$("output").value.length+" characters";
+}
+
+$("generate").addEventListener("click",()=>{
+  generate();
+  notify("Email generated successfully!");
+});
+
+["type","name","role","company","skills","extra"].forEach(id=>{
+  $(id).addEventListener("input",generate);
+  $(id).addEventListener("change",generate);
+});
+
+$("output").addEventListener("input",updateCount);
+
+document.querySelectorAll("[data-type]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    $("type").value=button.dataset.type;
+    generate();
+    $("studio").scrollIntoView({behavior:"smooth"});
+    notify("Template loaded!");
+  });
+});
+
+$("copy").addEventListener("click",async()=>{
+  const text=$("subject").textContent+"\n\n"+$("output").value;
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(text);
+    }else{
+      const t=document.createElement("textarea");
+      t.value=text;
+      document.body.appendChild(t);
+      t.select();
+      const ok=document.execCommand("copy");
+      t.remove();
+      if(!ok)throw new Error("Copy failed");
+    }
+    notify("Email copied to clipboard!");
+  }catch(e){
+    notify("Select the email and copy it manually.");
+  }
+});
+
+$("download").addEventListener("click",()=>{
+  const blob=new Blob(
+    [$("subject").textContent+"\n\n"+$("output").value],
+    {type:"text/plain;charset=utf-8"}
+  );
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="mailcraft-email.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+  notify("Email downloaded!");
+});
+
+$("reset").addEventListener("click",()=>{
+  $("type").value="internship";
+  $("name").value="";
+  $("role").value="Python Developer Intern";
+  $("company").value="";
+  $("skills").value="";
+  $("extra").value="";
+  generate();
+  notify("Fields reset.");
+});
+
+generate();
+</script>
+</body>
+
+</html>
